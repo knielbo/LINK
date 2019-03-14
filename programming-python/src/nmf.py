@@ -34,19 +34,23 @@ texts = list(db.values())
 # vector space
 no_features = 1000
 tfidf_vectorizer = TfidfVectorizer(
-    max_df=0.80, min_df=10, max_features=no_features, stop_words='english'
+    max_df=.95, min_df=10, max_features=no_features
     )
 tfidf = tfidf_vectorizer.fit_transform(texts)
 tfidf_feature_names = tfidf_vectorizer.get_feature_names()
 
+
 # NMF
-no_topics = 50
+no_topics = 5
 nmf = NMF(
-    n_components=no_topics, random_state=1, alpha=.1, l1_ratio=.5, init='nndsvd').fit(tfidf)
+    n_components=no_topics, random_state=1, alpha=.1, l1_ratio=.5,
+    init='nndsvd').fit(tfidf)
+
 no_top_words = 10
 
 # components
 W = nmf.fit_transform(tfidf)
+print(W)
 H = nmf.components_
 
 # explore
